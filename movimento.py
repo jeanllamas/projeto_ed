@@ -1,5 +1,6 @@
 from conta import Conta
 from datetime import datetime
+import json
 
 
 class Movimento:
@@ -70,3 +71,17 @@ class Movimento:
                 f"{data} - {operacao}: R${valor} - Saldo antes: R${saldo_anterior} - Saldo depois: R${saldo}"
             )
         input()
+
+    @classmethod
+    def salvar_no_arquivo(cls):
+        with open("movimentos.json", "w") as arquivo:
+            json.dump(cls.bd_movimento, arquivo, indent=2, default=int)
+
+    @classmethod
+    def carregar_do_arquivo(cls):
+        try:
+            with open("movimentos.json", "r") as arquivo:
+                cls.bd_movimento = json.load(arquivo)
+            input("Dados carregados com sucesso.")
+        except FileNotFoundError:
+            input("O arquivo 'movimentos.json' não foi encontrado.")

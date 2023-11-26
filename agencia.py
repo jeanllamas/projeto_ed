@@ -1,3 +1,6 @@
+import json
+
+
 class Agencia:
     bd_agencia = {}
 
@@ -22,18 +25,35 @@ class Agencia:
 
     @classmethod
     def verificar_agencia(cls, cod_agencia):
-        if cod_agencia in cls.bd_agencia:
-            return True
+        return cod_agencia in cls.bd_agencia
 
     def alterar(self):
-        self.update_agencia = self.dict_agencia()
-        self.bd_agencia[self.update_agencia["cod_agencia"]].update(self.update_agencia)
-        return input(self.bd_agencia)
+        self.bd_agencia[self.cod_agencia].update(self.dict_agencia())
+        return self.bd_agencia
 
     @classmethod
     def consultar(cls, cod_agencia):
-        input(f"{cls.bd_agencia[cod_agencia]}\n")
+        # input(f"{cls.bd_agencia[cod_agencia]}\n")
+        agencia = cls.bd_agencia.get(cod_agencia)
+        if agencia:
+            input(f"Agência {cod_agencia}:\n{agencia}")
+        else:
+            input(f"Agência com código {cod_agencia} não encontrada.")
 
     @classmethod
     def remover(cls, cod_agencia):
-        cls.bd_agencia.pop(cod_agencia)
+        cls.bd_agencia.pop(cod_agencia, None)
+
+    @classmethod
+    def salvar_no_arquivo(cls):
+        with open("agencias.json", "w") as arquivo:
+            json.dump(cls.bd_agencia, arquivo, indent=2, default=int)
+
+    @classmethod
+    def carregar_do_arquivo(cls):
+        try:
+            with open("agencias.json", "r") as arquivo:
+                cls.bd_agencia = {int(k): v for k, v in json.load(arquivo).items()}
+            input("Dados carregados com sucesso.")
+        except FileNotFoundError:
+            input("O arquivo 'agencias.json' não foi encontrado.")
