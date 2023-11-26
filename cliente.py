@@ -1,3 +1,6 @@
+import json
+
+
 class Cliente:
     bd_cliente = {}
 
@@ -39,3 +42,17 @@ class Cliente:
     @classmethod
     def remover(cls, cpf):
         cls.bd_cliente.pop(cpf)
+
+    @classmethod
+    def salvar_no_arquivo(cls):
+        with open("clientes.json", "w") as arquivo:
+            json.dump(cls.bd_cliente, arquivo, indent=2, default=int)
+
+    @classmethod
+    def carregar_do_arquivo(cls):
+        try:
+            with open("clientes.json", "r") as arquivo:
+                cls.bd_cliente = {int(k): v for k, v in json.load(arquivo).items()}
+            input("Dados carregados com sucesso.")
+        except FileNotFoundError:
+            input("O arquivo 'clientes.json' não foi encontrado.")

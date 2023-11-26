@@ -93,6 +93,12 @@ while opcao != 0:
                             else:
                                 input("\nCPF não encontrado\n")
                                 continue
+                    case 5:
+                        print("Exportar em arquivo\n")
+                        Cliente.salvar_no_arquivo()
+                    case 6:
+                        print("Importar de arquivo\n")
+                        Cliente.carregar_do_arquivo()
                     case 0:
                         print()
             case 2:
@@ -159,6 +165,12 @@ while opcao != 0:
                             else:
                                 input("\nAgência não encontrada\n")
                                 continue
+                    case 5:
+                        print("Exportar em arquivo")
+                        Agencia.salvar_no_arquivo()
+                    case 6:
+                        print("Importar de arquivo")
+                        Agencia.carregar_do_arquivo()
                     case 0:
                         print()
             case 3:
@@ -169,6 +181,8 @@ while opcao != 0:
                     print("1. Criar conta")
                     print("2. Consultar saldo")
                     print("3. Extrato")
+                    print("4. Exportar em arquivo")
+                    print("5. Importar de arquivo")
                     print("0. Voltar")
 
                     opcao_conta = int(input("\nOpção número: "))
@@ -201,7 +215,17 @@ while opcao != 0:
                             cpf = int(input("CPF do Cliente: "))
                             cod_agencia = int(input("Código da Agência: "))
                             Movimento.extrato(cpf, cod_agencia)
-
+                        case 4:
+                            print("Exportar em arquivo")
+                            Conta.salvar_no_arquivo()
+                        case 5:
+                            print("Importar de arquivo")
+                            Conta.carregar_do_arquivo()
+                        case 0:
+                            print()
+                        case _:
+                            print("\nOpção inexistente")
+                            input()
             case 4:
                 print("Movimento")
                 opcao_movimento = -1
@@ -209,6 +233,8 @@ while opcao != 0:
                     os.system("cls")
                     print("1. Entrada")
                     print("2. Saída")
+                    print("3. Exportar em arquivo")
+                    print("4. Importar de arquivo")
                     print("0. Voltar")
 
                     opcao_movimento = int(input("\nOpção número: "))
@@ -229,6 +255,17 @@ while opcao != 0:
                             valor = float(input("Quantia a retirar: R$"))
                             movimento = Movimento(cpf, cod_agencia, valor)
                             Movimento.saida(movimento)
+                        case 3:
+                            print("Exportar em arquivo")
+                            Movimento.salvar_no_arquivo()
+                        case 4:
+                            print("Importar de arquivo")
+                            Movimento.carregar_do_arquivo()
+                        case 0:
+                            print()
+                        case _:
+                            print("\nOpção inexistente")
+                            input()
 
             case 0:
                 print()
