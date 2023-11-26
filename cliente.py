@@ -1,11 +1,10 @@
 class Cliente:
     bd_cliente = {}
 
-    def __init__(self, nome, cpf, data_nasc, endereco, telefone, email):
+    def __init__(self, nome, cpf, data_nasc, telefone, email):
         self.nome = nome
         self.cpf = cpf
         self.data_nasc = data_nasc
-        self.endereco = endereco
         self.telefone = telefone
         self.email = email
 
@@ -14,7 +13,6 @@ class Cliente:
             "nome": self.nome,
             "cpf": self.cpf,
             "data_nasc": self.data_nasc,
-            "endereco": self.endereco,
             "telefone": self.telefone,
             "email": self.email,
         }

@@ -1,45 +1,39 @@
 class Agencia:
     bd_agencia = {}
 
-    def __init__(self, nome, cnpj, num_agencia, num_banco, endereco, telefone, email):
+    def __init__(self, nome, cod_agencia, telefone, email):
         self.nome = nome
-        self.cnpj = cnpj
-        self.num_agencia = num_agencia
-        self.num_banco = num_banco
-        self.endereco = endereco
+        self.cod_agencia = cod_agencia
         self.telefone = telefone
         self.email = email
 
     def dict_agencia(self):
         self.agencia = {
             "nome": self.nome,
-            "cnpj": self.cnpj,
-            "num_agencia": self.num_agencia,
-            "num_banco": self.num_banco,
-            "endereco": self.endereco,
+            "cod_agencia": self.cod_agencia,
             "telefone": self.telefone,
             "email": self.email,
         }
         return self.agencia
 
     def inserir(self):
-        self.bd_agencia[self.agencia["cnpj"]] = self.dict_agencia()
+        self.bd_agencia[self.agencia["cod_agencia"]] = self.dict_agencia()
         return input(self.bd_agencia)
 
     @classmethod
-    def verificar_cnpj(cls, cnpj):
-        if cnpj in cls.bd_agencia:
+    def verificar_agencia(cls, cod_agencia):
+        if cod_agencia in cls.bd_agencia:
             return True
 
     def alterar(self):
         self.update_agencia = self.dict_agencia()
-        self.bd_agencia[self.update_agencia["cnpj"]].update(self.update_agencia)
+        self.bd_agencia[self.update_agencia["cod_agencia"]].update(self.update_agencia)
         return input(self.bd_agencia)
 
     @classmethod
-    def consultar(cls, cnpj):
-        input(f"{cls.bd_agencia[cnpj]}\n")
+    def consultar(cls, cod_agencia):
+        input(f"{cls.bd_agencia[cod_agencia]}\n")
 
     @classmethod
-    def remover(cls, cnpj):
-        cls.bd_agencia.pop(cnpj)
+    def remover(cls, cod_agencia):
+        cls.bd_agencia.pop(cod_agencia)
