@@ -1,3 +1,6 @@
+import json
+
+
 class Conta:
     bd_conta = {}
 
@@ -27,3 +30,17 @@ class Conta:
     def consultar_saldo(cls, cpf, cod_agencia):
         chave = f"{cpf}_{cod_agencia}"
         input(cls.bd_conta[chave]["saldo"])
+
+    @classmethod
+    def salvar_no_arquivo(cls):
+        with open("contas.json", "w") as arquivo:
+            json.dump(cls.bd_conta, arquivo, indent=2, default=int)
+
+    @classmethod
+    def carregar_do_arquivo(cls):
+        try:
+            with open("contas.json", "r") as arquivo:
+                cls.bd_conta = json.load(arquivo)
+            input("Dados carregados com sucesso.")
+        except FileNotFoundError:
+            input("O arquivo 'contas.json' não foi encontrado.")
