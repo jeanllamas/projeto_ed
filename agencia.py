@@ -21,7 +21,7 @@ class Agencia:
 
     def inserir(self):
         self.bd_agencia[self.agencia["cod_agencia"]] = self.dict_agencia()
-        return input(self.bd_agencia)
+        return input("\nAgência registrada com sucesso.")
 
     @classmethod
     def verificar_agencia(cls, cod_agencia):
@@ -29,31 +29,34 @@ class Agencia:
 
     def alterar(self):
         self.bd_agencia[self.cod_agencia].update(self.dict_agencia())
-        return self.bd_agencia
+        return input("\nDados da agência foram atualizados.")
 
     @classmethod
     def consultar(cls, cod_agencia):
-        # input(f"{cls.bd_agencia[cod_agencia]}\n")
-        agencia = cls.bd_agencia.get(cod_agencia)
-        if agencia:
-            input(f"Agência {cod_agencia}:\n{agencia}")
-        else:
-            input(f"Agência com código {cod_agencia} não encontrada.")
+        telefone_formatado = f"({cls.bd_agencia[cod_agencia]["telefone"][:2]}) {cls.bd_agencia[cod_agencia]["telefone"][2:7]}-{cls.bd_agencia[cod_agencia]["telefone"][7:]}"
+
+        print(f"\nNome: {cls.bd_agencia[cod_agencia]["nome"]}")
+        print(f"Código de Agência: {cls.bd_agencia[cod_agencia]["cod_agencia"]}")
+        print(f"Telefone: {telefone_formatado}")
+        print(f"E-mail: {cls.bd_agencia[cod_agencia]["email"]}")
+        input()
 
     @classmethod
     def remover(cls, cod_agencia):
-        cls.bd_agencia.pop(cod_agencia, None)
+        cls.bd_agencia.pop(cod_agencia)
+        input("\nAgência removida.")
 
     @classmethod
-    def salvar_no_arquivo(cls):
+    def exportar(cls):
         with open("agencias.json", "w") as arquivo:
-            json.dump(cls.bd_agencia, arquivo, indent=2, default=int)
+            json.dump(cls.bd_agencia, arquivo, indent=4)
+        input("Dados exportados com sucesso.")
 
     @classmethod
-    def carregar_do_arquivo(cls):
+    def importar(cls):
         try:
             with open("agencias.json", "r") as arquivo:
-                cls.bd_agencia = {int(k): v for k, v in json.load(arquivo).items()}
-            input("Dados carregados com sucesso.")
+                cls.bd_agencia = json.load(arquivo)
+            input("Dados importados com sucesso.")
         except FileNotFoundError:
             input("O arquivo 'agencias.json' não foi encontrado.")

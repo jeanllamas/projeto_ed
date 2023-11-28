@@ -1,0 +1,9 @@
+{
+    "12345678900": {
+        "nome": "Cliente Teste",
+        "cpf": "12345678900",
+        "data_nasc": "01012001",
+        "telefone": "15991234567",
+        "email": "cliente@email.com"
+    }
+}

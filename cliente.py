@@ -23,36 +23,49 @@ class Cliente:
 
     def inserir(self):
         self.bd_cliente[self.cliente["cpf"]] = self.dict_cliente()
-        return input(self.bd_cliente)
+        return input("\nCliente registrado com sucesso.")
 
     @classmethod
     def verificar_cpf(cls, cpf):
-        if cpf in cls.bd_cliente:
-            return True
+        return cpf in cls.bd_cliente
 
     def alterar(self):
         self.update_cliente = self.dict_cliente()
         self.bd_cliente[self.update_cliente["cpf"]].update(self.update_cliente)
-        return input(self.bd_cliente)
+        return input("\nDados do cliente foram atualizados.")
 
     @classmethod
     def consultar(cls, cpf):
-        input(f"{cls.bd_cliente[cpf]}\n")
+        cpf_formatado = f"{cls.bd_cliente[cpf]["cpf"][:3]}.{cls.bd_cliente[cpf]["cpf"][3:6]}.{cls.bd_cliente[cpf]["cpf"][6:9]}-{cls.bd_cliente[cpf]["cpf"][9:]}"
+        dia = cls.bd_cliente[cpf]["data_nasc"][:2]
+        mes = cls.bd_cliente[cpf]["data_nasc"][2:4]
+        ano = cls.bd_cliente[cpf]["data_nasc"][4:]
+        data_formatada = f"{dia}/{mes}/{ano}"
+        telefone_formatado = f"({cls.bd_cliente[cpf]["telefone"][:2]}) {cls.bd_cliente[cpf]["telefone"][2:7]}-{cls.bd_cliente[cpf]["telefone"][7:]}"
+
+        print(f"\nNome: {cls.bd_cliente[cpf]["nome"]}")
+        print(f"CPF: {cpf_formatado}")
+        print(f"Data de Nascimento: {data_formatada}")
+        print(f"Telefone: {telefone_formatado}")
+        print(f"E-mail: {cls.bd_cliente[cpf]["email"]}")
+        input()
 
     @classmethod
     def remover(cls, cpf):
         cls.bd_cliente.pop(cpf)
+        input("\nCliente removido.")
 
     @classmethod
-    def salvar_no_arquivo(cls):
+    def exportar(cls):
         with open("clientes.json", "w") as arquivo:
-            json.dump(cls.bd_cliente, arquivo, indent=2, default=int)
+            json.dump(cls.bd_cliente, arquivo, indent=4)
+        input("Dados exportados com sucesso.")
 
     @classmethod
-    def carregar_do_arquivo(cls):
+    def importar(cls):
         try:
             with open("clientes.json", "r") as arquivo:
-                cls.bd_cliente = {int(k): v for k, v in json.load(arquivo).items()}
-            input("Dados carregados com sucesso.")
+                cls.bd_cliente = json.load(arquivo)
+            input("Dados importados com sucesso.")
         except FileNotFoundError:
             input("O arquivo 'clientes.json' não foi encontrado.")

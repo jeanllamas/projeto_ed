@@ -39,23 +39,21 @@ class Movimento:
 
         saldo_novo = saldo - self.valor
 
-        if saldo_novo >= limite_especial:
-            Conta.bd_conta[chave]["saldo"] = saldo_novo
-        else:
-            print("Saldo insuficiente")
-
-        data = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-
         if chave not in self.bd_movimento:
             self.bd_movimento[chave] = {}
 
-        self.bd_movimento[chave][data] = {
-            "data": data,
-            "operacao": "Saída",
-            "valor": self.valor,
-            "saldo_anterior": saldo,
-            "saldo": saldo_novo,
-        }
+        if saldo_novo >= limite_especial:
+            Conta.bd_conta[chave]["saldo"] = saldo_novo
+            data = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+            self.bd_movimento[chave][data] = {
+                "data": data,
+                "operacao": "Saída",
+                "valor": self.valor,
+                "saldo_anterior": saldo,
+                "saldo": saldo_novo,
+            }
+        else:
+            input("\nSaldo insuficiente")
 
     @classmethod
     def extrato(cls, cpf, cod_agencia):
@@ -67,21 +65,26 @@ class Movimento:
             saldo_anterior = movimento["saldo_anterior"]
             saldo = movimento["saldo"]
 
+            valor_formatado = f"R${valor:,.2f}"
+            saldo_anterior_formatado = f"R${saldo_anterior:,.2f}"
+            saldo_formatado = f"R${saldo:,.2f}"
+
             print(
-                f"{data} - {operacao}: R${valor} - Saldo antes: R${saldo_anterior} - Saldo depois: R${saldo}"
+                f"{data} - {operacao}: {valor_formatado} - Saldo antes: {saldo_anterior_formatado} - Saldo depois: {saldo_formatado}"
             )
         input()
 
     @classmethod
-    def salvar_no_arquivo(cls):
+    def exportar(cls):
         with open("movimentos.json", "w") as arquivo:
-            json.dump(cls.bd_movimento, arquivo, indent=2, default=int)
+            json.dump(cls.bd_movimento, arquivo, indent=4)
+        input("Dados exportados com sucesso.")
 
     @classmethod
-    def carregar_do_arquivo(cls):
+    def importar(cls):
         try:
             with open("movimentos.json", "r") as arquivo:
                 cls.bd_movimento = json.load(arquivo)
-            input("Dados carregados com sucesso.")
+            input("Dados importados com sucesso.")
         except FileNotFoundError:
             input("O arquivo 'movimentos.json' não foi encontrado.")

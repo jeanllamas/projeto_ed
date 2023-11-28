@@ -24,23 +24,24 @@ class Conta:
     def inserir(self):
         chave = f"{self.cpf}_{self.cod_agencia}"
         self.bd_conta[chave] = self.dict_conta()
-        return input(self.bd_conta)
+        return input("\nConta registrada com sucesso.")
 
     @classmethod
     def consultar_saldo(cls, cpf, cod_agencia):
         chave = f"{cpf}_{cod_agencia}"
-        input(cls.bd_conta[chave]["saldo"])
+        input(f"\nSaldo da conta: R${cls.bd_conta[chave]["saldo"]:,.2f}")
 
     @classmethod
-    def salvar_no_arquivo(cls):
+    def exportar(cls):
         with open("contas.json", "w") as arquivo:
-            json.dump(cls.bd_conta, arquivo, indent=2, default=int)
+            json.dump(cls.bd_conta, arquivo, indent=4)
+        input("Dados exportados com sucesso.")
 
     @classmethod
-    def carregar_do_arquivo(cls):
+    def importar(cls):
         try:
             with open("contas.json", "r") as arquivo:
                 cls.bd_conta = json.load(arquivo)
-            input("Dados carregados com sucesso.")
+            input("Dados importados com sucesso.")
         except FileNotFoundError:
             input("O arquivo 'contas.json' não foi encontrado.")
